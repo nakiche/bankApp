@@ -38,7 +38,8 @@ export default function Form() {
     //  }
     try {
     let  {data}  = await axios.post("http://localhost:8081/api/v1/clients/login", formData);
-    if (data.userName){
+    console.log(data)
+    if (data.firstName){
           localStorage.setItem("logged","true");
           localStorage.setItem("user", JSON.stringify(data))
         

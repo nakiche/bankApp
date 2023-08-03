@@ -45,7 +45,7 @@ public class AccountController {
 //    }
 
     @PostMapping("/accounts/{clientId}")
-    public ResponseEntity<Account> createComment(@PathVariable(value = "clientId") Long clientId,
+    public ResponseEntity<Account> addAccount(@PathVariable(value = "clientId") Long clientId,
                                                  @RequestBody Account accountToAdd) {
 
 

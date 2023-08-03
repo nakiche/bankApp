@@ -2,7 +2,10 @@ package com.bank.app.client;
 
 import com.bank.app.account.Account;
 import com.bank.app.repository.ClientRepository;
+import com.bank.app.response.ContactResponse;
+import com.bank.app.response.Response;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,44 +42,62 @@ public class ClientService {
         }
 
         long idClient = clients.getId();
-        return new ResponseEntity<>(clientRepository.findById(idClient), HttpStatus.OK);
+        Response result = new Response();
+        result = getClientAccounts(idClient);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     public List<Client> getClients() {
         return clientRepository.findAll();
     }
 
-    public  ResponseEntity<Object> getClientById(long clientId) {
-
-
+    public  Response getClientAccounts(long clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new IllegalStateException(
                 "Client with id " + clientId + " does not exist."
         ));
 
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        Response result = new Response();
+        result.setId(client.getId());
+        result.setFirstName(client.getFirstName());
+        result.setLastName(client.getLastName());
+        result.setEmail(client.getEmail());
+        result.setAccountBalance(client.getAccountBalance());
+        List<Account> accounts =client.getAccounts();
+        result.setAccountOwners(getContactAccountDetails(accounts));
+        return result;
+    }
+
+    public  List<ContactResponse> getContactAccountDetails(List<Account> accounts) {
+
+        ContactResponse contactDetails = new ContactResponse();
+        List<ContactResponse> accountList = new ArrayList<>();
+        for (Account s : accounts) {
+            Client client=  clientRepository.findClientByAccountNumber(s.getAccountNumber());
+            contactDetails.setFirstName(client.getFirstName());
+            contactDetails.setLastName(client.getLastName());
+            contactDetails.setAccountNumber(client.getAccountNumber());
+            accountList.add(contactDetails);
+        }
+
+        return accountList;
     }
 
 
-    public Optional<Client> getAccounts(Client client) {
-        System.out.println("solaaaaaaaaaaaaaaaaaa" + client);
-        Optional<Client> accountOptional = clientRepository.findClientByAccountNumber(client.getAccountNumber());
-        if(accountOptional.isEmpty()){
+    public ContactResponse  validateAccount(Client client) {
+
+        Client clientPresent = clientRepository.findClientByAccountNumber(client.getAccountNumber());
+        ContactResponse contactDetails = new ContactResponse();
+
+        if(Objects.isNull(clientPresent)){
             throw new IllegalStateException("Account number doesn't exist");
         }
-//        Client clientData = accountOptional.get();
-//        ClientDetails clientDetails = new ClientDetails();
-//        //clientDetails.setClientId(clientData.getId());
-//        clientDetails.setFirstName(clientData.getFirstName());
-//        clientDetails.setLastName(clientData.getLastName());
-//        clientDetails.setEmail(clientData.getEmail());
-//        clientDetails.setAccountNumber(clientData.getAccountNumber());
 
-        //return Optional.of(clientDetails);
-        return accountOptional;
+        contactDetails.setFirstName(clientPresent.getFirstName());
+        contactDetails.setLastName(clientPresent.getLastName());
+        contactDetails.setAccountNumber(clientPresent.getAccountNumber());
+
+        return contactDetails ;
     }
-
-
-
 
     public ResponseEntity<Object> addNewClient(Client client) {
         Optional<Client> clientOptional = clientRepository.findClientByUserName(client.getUserName());

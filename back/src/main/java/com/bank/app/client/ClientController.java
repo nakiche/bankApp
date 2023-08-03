@@ -1,7 +1,10 @@
 package com.bank.app.client;
 
 import com.bank.app.account.Account;
+import com.bank.app.response.ContactResponse;
+import com.bank.app.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,18 +35,15 @@ public class ClientController {
     }
 
     @GetMapping(path = "{clientId}")
-    public ResponseEntity<Object> getClientById(@PathVariable("clientId") Long clientId)
+    public ResponseEntity<Response> getClientAndAccountsById(@PathVariable("clientId") Long clientId)
     {
-        return clientService.getClientById(clientId);
+          return new ResponseEntity<>(clientService.getClientAccounts(clientId), HttpStatus.OK);
     }
 
-
-
-
     @PostMapping (path = "/accounts")
-    public Optional<Client> getAllAccounts(@RequestBody Client client)
+    public ContactResponse getAllAccounts(@RequestBody Client client)
     {
-        return clientService.getAccounts(client);
+        return clientService.validateAccount(client);
     }
 
     @PostMapping

@@ -15,7 +15,7 @@ export default function Form({}) {
   //console.log(userLocalStore)
   let userAccounts =[]
   
-  userLocalStore.accounts.length>0 && userLocalStore.accounts.map((c)=>
+  userLocalStore.accountOwners.length>0 && userLocalStore.accountOwners.map((c)=>
    userAccounts.push(c)
   )
 
@@ -74,19 +74,12 @@ export default function Form({}) {
         })
       }
       } catch (error) {
-       
-        setError(error.response.data.message)
-        setTimeout(cleanState, 3000);
+        toast.error(error.response.data.message)
       } 
-
-
   };
 
-    
   const handleCreateContact = async () => {
-    console.log("entro a handle create",formData);
-    
-    try {
+     try {
        let { data } = await axios.post(`/api/v1/clients/accounts/${userLocalStore.id}`,{
          "accountNumber": formData.accountNumber
        });
@@ -100,7 +93,6 @@ export default function Form({}) {
         email: "",
       });
     } catch (error) {
-      console.log(error.response.data.message)
       toast.error(error.response.data.message)
       setFormData({
         accountNumber: "",
@@ -111,18 +103,15 @@ export default function Form({}) {
   
     }
     setAddAccount(false);
-
       try {
         let  {data}  = await axios.get(`/api/v1/clients/${userLocalStore.id}`)
-        if (data.userName){
+        if (data.firstName){
               localStorage.setItem("user", JSON.stringify(data))
-              setAccounts(data.accounts)
+              setAccounts(data.accountOwners)
         }
        } catch (error) {
-        setError(error.response.data.message)
-        setTimeout(cleanState, 3000);
+        toast.error(error.response.data.message)
       };
-   
   };
 
   const handleCreate = async () => {
@@ -130,32 +119,24 @@ export default function Form({}) {
   };
 
   const handleDelete = async (account) => {
-    
-    // setDeleteData({
-    // id: account.id,
-    // accountNumber: account.accountNumber,
-    // });
     console.log("account deleted");
-    // console.log(deleteData)  
-
+    //delete account
     try {
       let {data}  = await axios.delete(`/api/v1/clients/accounts/${userLocalStore.id}`, {data:account})  
     } catch (error) {
-      setError(error.response.data.message)
-      setTimeout(cleanState, 3000);
+      toast.error(error.response.data.message)
     } 
-
+    //retrieve accounts
     try {
       let  {data}  = await axios.get(`/api/v1/clients/${userLocalStore.id}`)
-      if (data.userName){
+      console.log(data);
+      if (data.firstName){
             localStorage.setItem("user", JSON.stringify(data))
-            setAccounts(data.accounts)
+            setAccounts(data.accountOwners)
       }
      } catch (error) {
-      setError(error.response.data.message)
-      setTimeout(cleanState, 3000);
-    };
-
+      toast.error(error.response.data.message)
+    }
   }
 
   const handleInputChange = async (evento) => {
