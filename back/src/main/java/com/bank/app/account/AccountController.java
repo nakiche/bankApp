@@ -75,7 +75,9 @@ public class AccountController {
        clientRepository.findById(clientId).orElseThrow(() -> new IllegalStateException(
                 "Client with id " + clientId + " does not exist."
        ));
-       accountRepository.deleteById(accountToDelete.getId());
+       Account account = accountRepository.findAccountByAccountNumber(accountToDelete.getAccountNumber());
+
+       accountRepository.deleteById(account.getId());
        return ResponseEntity.status(HttpStatus.OK).body("Account deleted" );
     }
 

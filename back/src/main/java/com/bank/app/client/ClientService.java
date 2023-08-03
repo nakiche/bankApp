@@ -91,7 +91,7 @@ public class ClientService {
         if(Objects.isNull(clientPresent)){
             throw new IllegalStateException("Account number doesn't exist");
         }
-
+        contactDetails.setId((clientPresent.getId()));
         contactDetails.setFirstName(clientPresent.getFirstName());
         contactDetails.setLastName(clientPresent.getLastName());
         contactDetails.setAccountNumber(clientPresent.getAccountNumber());
