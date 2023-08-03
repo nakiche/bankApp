@@ -3,6 +3,7 @@ package com.bank.app.account;
 import com.bank.app.client.Client;
 import com.bank.app.repository.ClientRepository;
 import com.bank.app.repository.AccountRepository;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,14 @@ public class AccountController {
     public ResponseEntity<Account> createComment(@PathVariable(value = "clientId") Long clientId,
                                                  @RequestBody Account accountToAdd) {
 
+
+
         Account account = clientRepository.findById(clientId).map(client -> {
+
+            if(Objects.equals(client.getAccountNumber(), accountToAdd.getAccountNumber())){
+                throw new IllegalStateException("You can't add your own account");
+            }
+
         List<Account> noRepeatedAccounts = client.getAccounts();
                 for (Account s : noRepeatedAccounts) {
                     if (accountToAdd.getAccountNumber().equals(s.getAccountNumber())) {

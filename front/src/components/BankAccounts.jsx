@@ -60,11 +60,11 @@ export default function Form({}) {
   }
 
   const handleSubmit = async () => {
-    try {
-      let { data } = await axios.post(`/api/v1/clients/accounts/${userLocalStore.id}`,{
-        "accountNumber": formData.accountNumber
-      });
-      console.log(data)
+   
+       try {
+      let { data } = await axios.post(`/api/v1/clients/accounts`,{
+        "accountNumber":formData.accountNumber
+      })
 
       if (data.accountNumber){
         setFormData({...formData,
@@ -74,9 +74,43 @@ export default function Form({}) {
         })
       }
       } catch (error) {
+       
         setError(error.response.data.message)
         setTimeout(cleanState, 3000);
       } 
+
+
+  };
+
+    
+  const handleCreateContact = async () => {
+    console.log("entro a handle create",formData);
+    
+    try {
+       let { data } = await axios.post(`/api/v1/clients/accounts/${userLocalStore.id}`,{
+         "accountNumber": formData.accountNumber
+       });
+       console.log(data)
+       toast.success("Account added succesfully");
+
+       setFormData({
+        accountNumber: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
+    } catch (error) {
+      console.log(error.response.data.message)
+      toast.error(error.response.data.message)
+      setFormData({
+        accountNumber: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
+  
+    }
+    setAddAccount(false);
 
       try {
         let  {data}  = await axios.get(`/api/v1/clients/${userLocalStore.id}`)
@@ -89,42 +123,6 @@ export default function Form({}) {
         setTimeout(cleanState, 3000);
       };
    
-  };
-
-    
-  const handleCreateContact = async () => {
-    console.log("entro a handle create",formData);
-    setAddAccount(false);
-    toast.success("Account added succesfully");
-    
-    
-    let arreglo = accounts
-    arreglo.push({
-      firstName: formData.firstName,
-      accountNumber: formData.accountNumber, 
-
-    })
-     setAccounts(arreglo)
-
-    setFormData({
-      accountNumber: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-    });
-    
-    try {
-        // let { data } = await axios.post("http://localhost:8081/api/v1/clients/accounts", {
-        //   "accountNumber": formData.accountNumber
-        // });
-
-        // if (data.accountNumber){
-        //   console.log(data);
-        // }
-      } catch (error) {
-        setError(error.response.data.message)
-        setTimeout(cleanState, 3000);
-      } 
   };
 
   const handleCreate = async () => {

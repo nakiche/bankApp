@@ -57,11 +57,12 @@ public class ClientService {
     }
 
 
-//    public Optional<ClientDetails> getAccounts(Client client) {
-//        Optional<Client> accountOptional = clientRepository.findClientByAccountNumber(client.getAccountNumber());
-//        if(accountOptional.isEmpty()){
-//            throw new IllegalStateException("Account number doesn't exist");
-//        }
+    public Optional<Client> getAccounts(Client client) {
+        System.out.println("solaaaaaaaaaaaaaaaaaa" + client);
+        Optional<Client> accountOptional = clientRepository.findClientByAccountNumber(client.getAccountNumber());
+        if(accountOptional.isEmpty()){
+            throw new IllegalStateException("Account number doesn't exist");
+        }
 //        Client clientData = accountOptional.get();
 //        ClientDetails clientDetails = new ClientDetails();
 //        //clientDetails.setClientId(clientData.getId());
@@ -69,9 +70,10 @@ public class ClientService {
 //        clientDetails.setLastName(clientData.getLastName());
 //        clientDetails.setEmail(clientData.getEmail());
 //        clientDetails.setAccountNumber(clientData.getAccountNumber());
-//
-//        return Optional.of(clientDetails);
-//    }
+
+        //return Optional.of(clientDetails);
+        return accountOptional;
+    }
 
 
 

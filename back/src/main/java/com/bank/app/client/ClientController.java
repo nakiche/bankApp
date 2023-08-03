@@ -40,17 +40,11 @@ public class ClientController {
 
 
 
-//    @GetMapping(path = "/accounts")
-//    public Optional<ClientDetails> getAllAccounts(@RequestBody Client client)
-//    {
-//        return clientService.getAccounts(client);
-//    }
-
-//    @PostMapping(path = "/account/save")
-//    public ResponseEntity<Object> postAccount(@RequestBody Client client)
-//    {
-//        return clientService.saveAccount(client);
-//    }
+    @PostMapping (path = "/accounts")
+    public Optional<Client> getAllAccounts(@RequestBody Client client)
+    {
+        return clientService.getAccounts(client);
+    }
 
     @PostMapping
     public ResponseEntity<Object> registerNewClient(@RequestBody Client client){
