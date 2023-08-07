@@ -42,7 +42,7 @@ export default function Sidebar({userdata}) {
 
          <div >
             <span className="font-bold">
-                $ {user ? user.accountBalance : `$userAccountBalance`}
+                € {user ? user.accountBalance : `$userAccountBalance`}
             </span>
          </div>
          <div>  

@@ -61,6 +61,7 @@ public class ClientService {
         result.setFirstName(client.getFirstName());
         result.setLastName(client.getLastName());
         result.setEmail(client.getEmail());
+        result.setUserName(client.getUserName());
         result.setAccountBalance(client.getAccountBalance());
         List<Account> accounts =client.getAccounts();
         result.setAccountOwners(getContactAccountDetails(accounts));
@@ -76,12 +77,12 @@ public class ClientService {
             contactDetails.setFirstName(client.getFirstName());
             contactDetails.setLastName(client.getLastName());
             contactDetails.setAccountNumber(client.getAccountNumber());
+            contactDetails.setUserName(client.getUserName());
             accountList.add(contactDetails);
         }
 
         return accountList;
     }
-
 
     public ContactResponse  validateAccount(Client client) {
 

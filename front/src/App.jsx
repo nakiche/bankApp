@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation  } from 'react-router-dom'
 import axios from 'axios';
 
-import { Navbar } from './components/Navbar/navbar'
+import { Navbar } from './components/Navbar/Navbar'
 import  Login  from './components/Login'
 import  SignUp  from './components/SignUp'
 import  Sidebar  from './components/Sidebar'
@@ -11,6 +11,7 @@ import  UserSettings  from './components/UserSettings'
 import  BankAccounts  from './components/BankAccounts'
 import  Transactions  from './components/Transactions'
 import  TransactionDetail  from './components/TransactionDetail'
+import  NewPayment  from './components/NewPayment'
 
 
 const App = () => {
@@ -65,7 +66,8 @@ const App = () => {
            <Route path='/user/settings' element={<UserSettings />} /> 
            <Route path='/bankaccounts' element={<BankAccounts  />} /> 
            <Route path='/personal' element={<Transactions />} /> 
-           <Route path='/transaction/:id' element={<TransactionDetail />} /> 
+           <Route path='/transaction/:id' element={<TransactionDetail />} />
+           <Route path='/newPayment' element={<NewPayment />} /> 
         </Routes>
         </div>
     </div>

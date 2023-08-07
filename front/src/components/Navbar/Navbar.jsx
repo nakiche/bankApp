@@ -15,11 +15,13 @@ const Navbar = () => {
 
       <div className="flex flex-wrap justify-end ">
         <div className="flex items-center justify-center h-24 rounded pr-2">
+        <Link to="/newpayment">
           <p className="text-sm text-gray-400 dark:text-gray-500">
             <button className="bg-transparent hover:bg-blue-500 text-blue-600 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded bg-[#50d71e]">
               $ NEW
             </button>
           </p>
+         </Link> 
         </div>
         <div className="flex items-center justify-center h-24 rounded pr-4 ">
         <button type="button" className="relative inline-flex">
