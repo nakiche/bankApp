@@ -15,14 +15,13 @@ export default function Form({}) {
   //console.log(userLocalStore)
   let userAccounts = [];
 
-  userLocalStore.accountOwners.length > 0 &&
+  userLocalStore.accountOwners &&
+    userLocalStore.accountOwners.length > 0 &&
     userLocalStore.accountOwners.map((c) => userAccounts.push(c));
 
   useEffect(() => {
     setAccounts(userAccounts);
   }, []);
-
-  console.log(userAccounts);
 
   const [addAccount, setAddAccount] = useState(false);
   const [errors, setErrors] = useState({
