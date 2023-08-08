@@ -68,11 +68,11 @@ public class ClientService {
     }
 
     public  List<ContactResponse> getContactAccountDetails(List<Account> accounts) {
-
-        ContactResponse contactDetails = new ContactResponse();
         List<ContactResponse> accountList = new ArrayList<>();
         for (Account s : accounts) {
+            ContactResponse contactDetails = new ContactResponse();
             Client client=  clientRepository.findClientByAccountNumber(s.getAccountNumber());
+            contactDetails.setId(s.getId());
             contactDetails.setFirstName(client.getFirstName());
             contactDetails.setLastName(client.getLastName());
             contactDetails.setAccountNumber(client.getAccountNumber());
@@ -96,7 +96,7 @@ public class ClientService {
         contactDetails.setLastName(clientPresent.getLastName());
         contactDetails.setAccountNumber(clientPresent.getAccountNumber());
 
-        return contactDetails ;
+        return contactDetails;
     }
 
     public ResponseEntity<Object> addNewClient(Client client) {

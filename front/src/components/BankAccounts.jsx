@@ -51,6 +51,7 @@ export default function Form({}) {
       let { data } = await axios.post(`/api/v1/clients/accounts`, {
         accountNumber: formData.accountNumber,
       });
+      console.log(data)
 
       if (data.accountNumber) {
         setFormData({
@@ -108,11 +109,11 @@ export default function Form({}) {
   };
 
   const handleDelete = async (account) => {
-    console.log("account deleted");
+    console.log(account);
     //delete account
     try {
       let { data } = await axios.delete(
-        `/api/v1/clients/accounts/${userLocalStore.id}`,
+        `/api/v1/clients/accounts`,
         { data: account }
       );
     } catch (error) {

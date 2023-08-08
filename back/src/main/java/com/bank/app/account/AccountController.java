@@ -29,21 +29,6 @@ public class AccountController {
     public AccountController() {
     }
 
-//    @GetMapping(path = "/accounts/{clientId}")
-//    public ResponseEntity<List<Account>> findByClientDetailId(@PathVariable(value = "clientId") Long clientId) {
-//
-//        boolean clientExists = clientRepository.existsById(clientId);
-//        if(!clientExists) {
-//            throw new IllegalStateException("Client with id " + clientId + " does not exist.");
-//        }else {
-//            System.out.println("sssssssssssssssssssssss");
-//        }
-//        List<Account> accounts=new ArrayList<Account>();
-////        List<Account> accounts = accountRepository.findAccountById(clientId);
-//        return new ResponseEntity<>(accounts, HttpStatus.OK);
-//
-//    }
-
     @PostMapping("/accounts/{clientId}")
     public ResponseEntity<Account> addAccount(@PathVariable(value = "clientId") Long clientId,
                                                  @RequestBody Account accountToAdd) {
@@ -69,15 +54,9 @@ public class AccountController {
         return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/accounts/{clientId}")
-    public ResponseEntity deleteAccount(@PathVariable(value = "clientId") Long clientId,
-                                                    @RequestBody Account accountToDelete) {
-       clientRepository.findById(clientId).orElseThrow(() -> new IllegalStateException(
-                "Client with id " + clientId + " does not exist."
-       ));
-       Account account = accountRepository.findAccountByAccountNumber(accountToDelete.getAccountNumber());
-
-       accountRepository.deleteById(account.getId());
+    @DeleteMapping("/accounts")
+    public ResponseEntity deleteAccount(@RequestBody Account accountToDelete) {
+       accountRepository.deleteById(accountToDelete.getId());
        return ResponseEntity.status(HttpStatus.OK).body("Account deleted" );
     }
 
