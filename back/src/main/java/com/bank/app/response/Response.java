@@ -18,6 +18,7 @@ public class Response {
     private String userName;
     private double accountBalance;
     private String email;
+    private String telephone;
     List<ContactResponse> accountOwners;
 
 }

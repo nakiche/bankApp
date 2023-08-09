@@ -64,27 +64,32 @@ public class ClientService {
         result.setUserName(client.getUserName());
         result.setAccountBalance(client.getAccountBalance());
         List<Account> accounts =client.getAccounts();
+
         result.setAccountOwners(getContactAccountDetails(accounts));
+        System.out.println("getContactAccountDetails(accounts) + id" + getContactAccountDetails(accounts));
+        result.setTelephone(client.getTelephone());
         return result;
     }
 
     public  List<ContactResponse> getContactAccountDetails(List<Account> accounts) {
 
-        ContactResponse contactDetails = new ContactResponse();
         List<ContactResponse> accountList = new ArrayList<>();
         for (Account s : accounts) {
+            ContactResponse contactDetails = new ContactResponse();
             Client client=  clientRepository.findClientByAccountNumber(s.getAccountNumber());
+            contactDetails.setId(client.getId());
             contactDetails.setFirstName(client.getFirstName());
             contactDetails.setLastName(client.getLastName());
             contactDetails.setAccountNumber(client.getAccountNumber());
             contactDetails.setUserName(client.getUserName());
+            contactDetails.setEmail(client.getEmail());
             accountList.add(contactDetails);
         }
 
         return accountList;
     }
 
-    public ContactResponse  validateAccount(Client client) {
+    public ContactResponse validateAccount(Client client) {
 
         Client clientPresent = clientRepository.findClientByAccountNumber(client.getAccountNumber());
         ContactResponse contactDetails = new ContactResponse();
@@ -128,7 +133,7 @@ public class ClientService {
     }
 
     @Transactional
-    public ResponseEntity<Object> updateClient(Long clientId, String email, String telephone) {
+    public ResponseEntity<Response> updateClient(Long clientId, String email, String telephone) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new IllegalStateException(
                 "Client with id " + clientId + " does not exist."
         ));
@@ -143,7 +148,18 @@ public class ClientService {
             throw new IllegalStateException("Phone number must be in correct format.");
         }
 
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        Response result = new Response();
+        result.setId(client.getId());
+        result.setFirstName(client.getFirstName());
+        result.setLastName(client.getLastName());
+        result.setEmail(client.getEmail());
+        result.setUserName(client.getUserName());
+        result.setAccountBalance(client.getAccountBalance());
+        List<Account> accounts =client.getAccounts();
+        result.setAccountOwners(getContactAccountDetails(accounts));
+        result.setTelephone(client.getTelephone());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

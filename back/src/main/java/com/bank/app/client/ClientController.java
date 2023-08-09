@@ -57,7 +57,7 @@ public class ClientController {
     }
 
     @PutMapping(path = "{clientId}")
-    public ResponseEntity<Object> updateClient(
+    public ResponseEntity<Response> updateClient(
             @PathVariable("clientId") Long clientId,
             @RequestParam(required = true) String email,
             @RequestParam(required = true) String telephone)
