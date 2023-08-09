@@ -11,11 +11,15 @@ export default function NewPayment() {
     accountNumber: "",
   });
   const [formData, setFormData] = useState({
+    recipientId: "",
     accountNumber: "",
     firstName: "",
     lastName: "",
     transferAmmount: "",
   });
+
+  let userLocalStore = JSON.parse(localStorage.getItem("user"));
+
 
   function Validate(inputs) {
     var errors = {};
@@ -39,7 +43,7 @@ export default function NewPayment() {
     // setAccount(false);
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (data) => {
     setFormData({
       ...formData,
       firstName: "",
@@ -51,9 +55,9 @@ export default function NewPayment() {
       });
 
       if (data.accountNumber) {
-        console.log(data);
         setFormData({
           ...formData,
+          recipientId: data.id,
           firstName: data.firstName,
           lastName: data.lastName,
         });
@@ -80,28 +84,24 @@ export default function NewPayment() {
   };
 
   const handleSubmit = async (event) => {
+   
     try {
-      // let { data } = await axios.post(`/api/v1/clients/accounts`, {
-      //   accountNumber: formData.accountNumber,
-      // });
+      let { data } = await axios.post(`/api/v1/clients/transfer`, {
+        senderId: userLocalStore.id,
+        recipientId:formData.recipientId,
+        amount: parseInt(formData.transferAmmount)
+      });
 
-      // if (data.accountNumber) {
-      //   setFormData({
-      //     ...formData,
-      //     firstName: data.firstName,
-      //     lastName: data.lastName,
-      //     email: data.email,
-      //   });
-      // }
       setAccountExists(false);
       setFormData({
+        senderId:"",
         accountNumber: "",
         firstName: "",
         lastName: "",
         transferAmmount: "",
       });
       event.target.reset();
-      toast.success("transfer successfully done");
+      toast.success(data);
     } catch (error) {
       toast.error(error.response.data.message);
     }

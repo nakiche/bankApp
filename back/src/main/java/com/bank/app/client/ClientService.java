@@ -169,11 +169,14 @@ public class ClientService {
             throw new IllegalStateException("Amount must be greater than 1");
         } else if (senderClient.getAccountBalance() < amount){
             throw new IllegalStateException("insufficient balance");
+        } else if ( senderId == recipientId){
+            throw new IllegalStateException("can not send money to your self");
         }
         //add money operation
         senderClient.setAccountBalance(senderClient.getAccountBalance()-amount);
         recipientClient.setAccountBalance(recipientClient.getAccountBalance()+amount);
-        return new ResponseEntity<>(amount + " sent to " + recipientClient.getFirstName(), HttpStatus.OK);
+        return new ResponseEntity<>(amount + " € sent to " + recipientClient.getFirstName() + " " +
+                recipientClient.getLastName(), HttpStatus.OK);
     }
 
 }

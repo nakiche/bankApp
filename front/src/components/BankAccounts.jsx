@@ -155,7 +155,7 @@ export default function Form({}) {
         <div className="flex flex-row justify-around">
           <div>
             <h3 className=" text-center text-2xl leading-9 tracking-tight text-gray-900">
-              <span className=" text-[#046CD9]">Bank Accounts</span>
+              <span className=" text-[#046CD9]">Contact's accounts</span>
             </h3>
           </div>
         {!addAccount &&  
