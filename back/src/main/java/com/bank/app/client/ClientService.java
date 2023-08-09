@@ -20,7 +20,6 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
     private final ClientAccountGenerator clientAccountGenerator;
-   // private final ClientDetailsRepository clientDetailsRepository;
 
     @Autowired
     public ClientService(ClientRepository clientRepository, ClientAccountGenerator clientAccountGenerator) {
@@ -77,7 +76,7 @@ public class ClientService {
         for (Account s : accounts) {
             ContactResponse contactDetails = new ContactResponse();
             Client client=  clientRepository.findClientByAccountNumber(s.getAccountNumber());
-            contactDetails.setId(client.getId());
+            contactDetails.setId(s.getId());
             contactDetails.setFirstName(client.getFirstName());
             contactDetails.setLastName(client.getLastName());
             contactDetails.setAccountNumber(client.getAccountNumber());
@@ -102,7 +101,7 @@ public class ClientService {
         contactDetails.setLastName(clientPresent.getLastName());
         contactDetails.setAccountNumber(clientPresent.getAccountNumber());
 
-        return contactDetails ;
+        return contactDetails;
     }
 
     public ResponseEntity<Object> addNewClient(Client client) {
@@ -116,11 +115,8 @@ public class ClientService {
         }
 
         client.setAccountNumber(clientAccountGenerator.generateAccountNumber());
-
         client.setAccountBalance(0.00);
-
         clientRepository.save(client);
-
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
@@ -160,6 +156,24 @@ public class ClientService {
         result.setTelephone(client.getTelephone());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    @Transactional
+    public ResponseEntity<String> transferMoney(Long senderId, Long recipientId, Double amount) {
+        Client senderClient = clientRepository.findById(senderId).orElseThrow(() -> new IllegalStateException(
+                "Sender with id " + senderId + " does not exist."
+        ));
+        Client recipientClient = clientRepository.findById(recipientId).orElseThrow(() -> new IllegalStateException(
+                "Recipient with id " + recipientId + " does not exist."
+        ));
+        if(Objects.isNull(amount) || amount < 1){
+            throw new IllegalStateException("Amount must be greater than 1");
+        } else if (senderClient.getAccountBalance() < amount){
+            throw new IllegalStateException("insufficient balance");
+        }
+        //add money operation
+        senderClient.setAccountBalance(senderClient.getAccountBalance()-amount);
+        recipientClient.setAccountBalance(recipientClient.getAccountBalance()+amount);
+        return new ResponseEntity<>(amount + " sent to " + recipientClient.getFirstName(), HttpStatus.OK);
     }
 
 }

@@ -3,6 +3,8 @@ package com.bank.app.client;
 import com.bank.app.account.Account;
 import com.bank.app.response.ContactResponse;
 import com.bank.app.response.Response;
+import com.bank.app.transfer.TransferBody;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,4 +66,10 @@ public class ClientController {
             {
                 return   clientService.updateClient(clientId, email, telephone);
     }
+    @PostMapping(path = "/transfer")
+    public ResponseEntity<String> transferMoney(@RequestBody TransferBody transferDetails){
+        return clientService.transferMoney(transferDetails.getSenderId(),transferDetails.getRecipientId(),
+                transferDetails.getAmount());
+    }
+
 }

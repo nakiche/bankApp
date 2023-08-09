@@ -15,14 +15,13 @@ export default function Form({}) {
   //console.log(userLocalStore)
   let userAccounts = [];
 
-  userLocalStore.accountOwners.length > 0 &&
+  userLocalStore.accountOwners &&
+    userLocalStore.accountOwners.length > 0 &&
     userLocalStore.accountOwners.map((c) => userAccounts.push(c));
 
   useEffect(() => {
     setAccounts(userAccounts);
   }, []);
-
-  console.log(userAccounts);
 
   const [addAccount, setAddAccount] = useState(false);
   const [errors, setErrors] = useState({
@@ -52,6 +51,7 @@ export default function Form({}) {
       let { data } = await axios.post(`/api/v1/clients/accounts`, {
         accountNumber: formData.accountNumber,
       });
+      console.log(data)
 
       if (data.accountNumber) {
         setFormData({
@@ -109,11 +109,11 @@ export default function Form({}) {
   };
 
   const handleDelete = async (account) => {
-    console.log("account deleted");
+    console.log(account);
     //delete account
     try {
       let { data } = await axios.delete(
-        `/api/v1/clients/accounts/${userLocalStore.id}`,
+        `/api/v1/clients/accounts`,
         { data: account }
       );
     } catch (error) {

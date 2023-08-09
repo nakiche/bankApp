@@ -39,8 +39,7 @@ export default function NewPayment() {
     // setAccount(false);
   };
 
-  const handleSearch = async (data) => {
-    console.log("entro a search");
+  const handleSearch = async () => {
     setFormData({
       ...formData,
       firstName: "",
